@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Stocks Simulator</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
+    <script src="./stocks.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Portfolio Value: <span id=""></span></h1>
+    <h5 id="portfolioValue"></h5>
+    <button onclick="addRandomData()">Add Data</button>
+        <canvas id="myChart" width="400" height="400"></canvas>
+        <script>
+        var ctx = document.getElementById("myChart").getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['January','Feburary','March', 'April'],
+                datasets: [{
+                    
+                    data: [100,200,300,400]         
+                   
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero:true
+                        }
+                    }]
+                }
+            }
+        });
+
+
+        var numData = myChart.data.datasets[0].data;
+        var labelData = myChart.data.labels; 
+        var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec']
+        
+        function calculateGains(){
+            var myPortfolio = numData[numData.length-1];
+            var myGains = Math.floor( (myPortfolio / numData[0] -1) * 100 );
+            var el = document.getElementById('portfolioValue');
+            el.value = myGains;
+            console.log(el.value);
+        }        
+
+            
+        function addRandomData(){
+            myChart.data.labels.push(months[6]);
+            myChart.data.datasets[0].data.push(Math.floor(Math.random()*500))
+            myChart.update();
+            
+            calculateGains();
+            
+            
+        }
+
+        setInterval(addRandomData, 2000);
+
+        console.log("Access to Labels", myChart.data.labels);
+        console.log("Access to Data", myChart.data.datasets[0].data);
+        
+        </script>
+    
+</body>
+</html>
